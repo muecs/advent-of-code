@@ -1,6 +1,6 @@
 use clap::{Parser, ValueEnum};
 
-#[derive(ValueEnum, Clone, Debug)]
+#[derive(ValueEnum, Clone, Copy, Debug)]
 pub enum PartValues {
     A,
     B,
