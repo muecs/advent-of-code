@@ -31,6 +31,7 @@ pub fn b(input: &Vec<&str>) -> String {
     let count = boards.len();
     let mut winners = BTreeSet::new();
     for number in numbers {
+        println!("Calling {number}");
         for (i, board) in boards.iter_mut().enumerate() {
             if winners.contains(&i) {
                 continue;
