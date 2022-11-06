@@ -47,6 +47,8 @@ fn to_inc_cost(x: usize) -> usize {
     x * (x + 1) / 2
 }
 
+// inverse of sum of ascending numbers
+#[allow(dead_code)]
 fn from_inc_cost(x: usize) -> usize {
     ((2f64 * x as f64 + 0.25).sqrt() - 0.5).round() as usize
 }
