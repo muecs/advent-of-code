@@ -73,28 +73,24 @@ fn apply_rules(
     #[cfg(test)]
     println!("{:?}", pairs);
 
-    // count elements in pairs by position
-    let mut elements: BTreeMap<char, (usize, usize)> = BTreeMap::new();
+    // count elements in pairs
+    let mut elements: BTreeMap<char, usize> = BTreeMap::new();
+    elements.insert(template.chars().nth(0).unwrap(), 1);
+    elements.insert(template.chars().last().unwrap(), 1);
     for pair in &pairs {
-        let mut it = pair.0.chars();
-        let c = it.next().unwrap();
-        if let Some(n) = elements.get_mut(&c) {
-            (*n).0 += *pair.1;
-        } else {
-            elements.insert(c, (*pair.1, 0));
-        }
-        let c = it.next().unwrap();
-        if let Some(n) = elements.get_mut(&c) {
-            (*n).1 += *pair.1;
-        } else {
-            elements.insert(c, (0, *pair.1));
+        for c in pair.0.chars() {
+            if let Some(n) = elements.get_mut(&c) {
+                *n += *pair.1;
+            } else {
+                elements.insert(c, *pair.1);
+            }
         }
     }
 
     // transform map to sorted vec, account for duplicates
     let mut vec = elements
         .iter()
-        .map(|x| (*x.0, std::cmp::max((*x.1).0, (*x.1).1)))
+        .map(|x| (*x.0, *x.1 / 2))
         .collect::<Vec<_>>();
     vec.sort_unstable_by(|a, b| a.1.cmp(&b.1).then(a.0.cmp(&b.0)));
     vec
