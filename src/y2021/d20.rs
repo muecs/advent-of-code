@@ -98,6 +98,7 @@ fn count_set_pixels(image: &Grid) -> usize {
 }
 
 #[test]
+#[ignore = "slow"]  // 3s
 pub fn test() {
     let input = vec![
         "..#.#..#####.#.#.#.###.##.....###.##.#..###.####..#####..#....#..#..##..##\

@@ -313,6 +313,7 @@ impl Transition {
 }
 
 #[test]
+#[ignore = "slow"]  // 16s
 pub fn test() {
     let input = vec![
         "#############",
