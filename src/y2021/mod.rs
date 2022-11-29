@@ -20,7 +20,7 @@ mod d19;
 mod d20;
 mod d21;
 mod d22;
-// mod d23;
+mod d23;
 // mod d24;
 // mod d25;
 
@@ -72,8 +72,8 @@ pub fn solve(day: u8, part: PartValues, input: &Vec<&str>) -> String {
         (21, B) => d21::b(&input),
         (22, A) => d22::a(&input),
         (22, B) => d22::b(&input),
-        // (23, A) => d23::a(&input),
-        // (23, B) => d23::b(&input),
+        (23, A) => d23::a(&input),
+        (23, B) => d23::b(&input),
         // (24, A) => d24::a(&input),
         // (24, B) => d24::b(&input),
         // (25, A) => d25::a(&input),
