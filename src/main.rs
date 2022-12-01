@@ -3,7 +3,7 @@ use std::time::SystemTime;
 
 mod args;
 mod y2021;
-// mod y2022;
+mod y2022;
 
 use crate::args::Args;
 
@@ -18,7 +18,7 @@ fn main() {
     let start = SystemTime::now();
     let solution = match args.year {
         2021 => y2021::solve(args.day, args.part, &input),
-        // 2022 => y2022::solve(args.day, args.part, &input),
+        2022 => y2022::solve(args.day, args.part, &input),
         _ => { println!("Unsupported year: {}", args.year); String::new() },
     };
     if solution.is_empty() {
