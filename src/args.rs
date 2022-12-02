@@ -14,7 +14,7 @@ pub struct Args {
     #[clap(value_parser)]
     pub year: u16,
 
-    /// Day of Puzzle
+    /// Day of puzzle
     #[clap(value_parser)]
     pub day: u8,
 
