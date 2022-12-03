@@ -2,6 +2,7 @@ use clap::Parser;
 use std::time::SystemTime;
 
 mod args;
+mod y2020;
 mod y2021;
 mod y2022;
 
@@ -17,6 +18,7 @@ fn main() {
     
     let start = SystemTime::now();
     let solution = match args.year {
+        2020 => y2020::solve(args.day, args.part, &input),
         2021 => y2021::solve(args.day, args.part, &input),
         2022 => y2022::solve(args.day, args.part, &input),
         _ => { println!("Unsupported year: {}", args.year); String::new() },
