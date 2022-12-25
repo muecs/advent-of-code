@@ -22,7 +22,7 @@ mod d21;
 // mod d22;
 mod d23;
 // mod d24;
-// mod d25;
+mod d25;
 
 use crate::args::PartValues::{self, *};
 
@@ -76,8 +76,7 @@ pub fn solve(day: u8, part: PartValues, input: &Vec<&str>) -> String {
         (23, B) => d23::b(&input),
         // (24, A) => d24::a(&input),
         // (24, B) => d24::b(&input),
-        // (25, A) => d25::a(&input),
-        // (25, B) => d25::b(&input),
+        (25, A) => d25::a(&input),
         _ => { println!("Unsupported puzzle: {day} {part:?}"); String::new() }
     }
 }
