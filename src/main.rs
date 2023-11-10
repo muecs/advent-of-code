@@ -33,7 +33,7 @@ fn main() {
 
 fn get_input(year: u16, day: u8) -> String {
     let url = format!("https://adventofcode.com/{year}/day/{day}/input");
-    let session = std::env::var("AOC_SESSION").unwrap();
+    let session = std::env::var("AOC_SESSION").expect("Could not fetch env var AOC_SESSION");
     reqwest::blocking::Client::default()
         .get(url)
         .header("cookie", format!("session={session}"))
