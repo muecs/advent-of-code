@@ -5,6 +5,7 @@ mod args;
 mod y2020;
 mod y2021;
 mod y2022;
+mod y2023;
 
 use crate::args::Args;
 
@@ -21,6 +22,7 @@ fn main() {
         2020 => y2020::solve(args.day, args.part, &input),
         2021 => y2021::solve(args.day, args.part, &input),
         2022 => y2022::solve(args.day, args.part, &input),
+        2023 => y2023::solve(args.day, args.part, &input),
         _ => { println!("Unsupported year: {}", args.year); String::new() },
     };
     if solution.is_empty() {
