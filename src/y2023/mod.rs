@@ -2,7 +2,7 @@ mod d01;
 mod d02;
 mod d03;
 mod d04;
-// mod d05;
+mod d05;
 // mod d06;
 // mod d07;
 // mod d08;
@@ -36,8 +36,8 @@ pub fn solve(day: u8, part: PartValues, input: &Vec<&str>) -> String {
         (03, B) => d03::b(&input),
         (04, A) => d04::a(&input),
         (04, B) => d04::b(&input),
-        // (05, A) => d05::a(&input),
-        // (05, B) => d05::b(&input),
+        (05, A) => d05::a(&input),
+        (05, B) => d05::b(&input),
         // (06, A) => d06::a(&input),
         // (06, B) => d06::b(&input),
         // (07, A) => d07::a(&input),
