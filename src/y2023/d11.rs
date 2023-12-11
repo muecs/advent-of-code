@@ -51,17 +51,19 @@ fn calc_distance_sum(galaxies: &Galaxies, expansion_factor: usize) -> usize {
     let expansion_factor = expansion_factor - 1;
     let mut sum = 0;
     for i in 0..galaxies.len() - 1 {
+        let g1 = &galaxies[i];
         for j in i + 1..galaxies.len() {
-            let (x0, rx0, x1, rx1) = if galaxies[i].x > galaxies[j].x {
-                (galaxies[j].x, galaxies[j].rx, galaxies[i].x, galaxies[i].rx)
+            let g2 = &galaxies[j];
+            let (x0, rx0, x1, rx1) = if g1.x > g2.x {
+                (g2.x, g2.rx, g1.x, g1.rx)
             } else {
-                (galaxies[i].x, galaxies[i].rx, galaxies[j].x, galaxies[j].rx)
+                (g1.x, g1.rx, g2.x, g2.rx)
             };
 
-            let (y0, ry0, y1, ry1) = if galaxies[i].y > galaxies[j].y {
-                (galaxies[j].y, galaxies[j].ry, galaxies[i].y, galaxies[i].ry)
+            let (y0, ry0, y1, ry1) = if g1.y > g2.y {
+                (g2.y, g2.ry, g1.y, g1.ry)
             } else {
-                (galaxies[i].y, galaxies[i].ry, galaxies[j].y, galaxies[j].ry)
+                (g1.y, g1.ry, g2.y, g2.ry)
             };
 
             let x_dist = (x1 - x0) as usize + (rx1 - rx0) as usize * expansion_factor;
