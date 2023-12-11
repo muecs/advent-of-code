@@ -1,69 +1,85 @@
 //! Day 11: Cosmic Expansion
 
-use std::collections::HashMap;
-
 /// sum of distances with 2x expansion
 pub fn a(input: &Vec<&str>) -> String {
-    let map = parse_input(input);
-    let distances = calc_distances(&map, 2);
-    distances.values().sum::<usize>().to_string()
+    let galaxies = parse_input(input);
+    calc_distance_sum(&galaxies, 2).to_string()
 }
 
 /// sum of distances with 1000000x expansion
 pub fn b(input: &Vec<&str>) -> String {
-    let map = parse_input(input);
-    let distances = calc_distances(&map, 1000000);
-    distances.values().sum::<usize>().to_string()
+    let galaxies = parse_input(input);
+    calc_distance_sum(&galaxies, 1000000).to_string()
 }
 
-fn parse_input(input: &Vec<&str>) -> Map {
-    let mut row_empty = vec![true; input.len()];
+fn parse_input(input: &Vec<&str>) -> Galaxies {
     let mut col_empty = vec![true; input[0].len()];
-    let mut stars = Vec::<(usize, usize)>::new();
+    let mut ry = 0;
+    let mut galaxies = Galaxies::new();
 
     for y in 0..input.len() {
+        let mut row_empty = true;
         for (x, b) in input[y].bytes().enumerate() {
             if b == b'#' {
-                stars.push((x, y));
+                galaxies.push(Galaxy {
+                    x: x as u8,
+                    y: y as u8,
+                    rx: 0,
+                    ry,
+                });
                 col_empty[x] = false;
-                row_empty[y] = false;
+                row_empty = false;
             }
         }
-    }
-
-    Map {
-        stars,
-        col_empty,
-        row_empty,
-    }
-}
-
-fn calc_distances(map: &Map, expansion_factor: usize) -> Distances {
-    assert!(expansion_factor > 0);
-    let mut distances = Distances::new();
-    for i in 0..map.stars.len() - 1 {
-        for j in i + 1..map.stars.len() {
-            let x0 = map.stars[i].0.min(map.stars[j].0);
-            let x1 = map.stars[i].0.max(map.stars[j].0);
-            let y0 = map.stars[i].1.min(map.stars[j].1);
-            let y1 = map.stars[i].1.max(map.stars[j].1);
-            let x_dist = x1 - x0
-                + (x0 + 1..x1).filter(|&x| map.col_empty[x]).count() * (expansion_factor - 1);
-            let y_dist = y1 - y0
-                + (y0 + 1..y1).filter(|&y| map.row_empty[y]).count() * (expansion_factor - 1);
-            distances.insert((i, j), x_dist + y_dist); // Manhattan
+        if row_empty {
+            ry += 1
         }
     }
-    distances
+
+    galaxies.iter_mut().for_each(|g| {
+        g.rx = col_empty
+            .iter()
+            .take(g.x as usize)
+            .fold(0, |acc, b| if *b { acc + 1 } else { acc })
+    });
+
+    galaxies
 }
 
-struct Map {
-    stars: Vec<(usize, usize)>,
-    col_empty: Vec<bool>,
-    row_empty: Vec<bool>,
+fn calc_distance_sum(galaxies: &Galaxies, expansion_factor: usize) -> usize {
+    assert!(expansion_factor > 0);
+    let expansion_factor = expansion_factor - 1;
+    let mut sum = 0;
+    for i in 0..galaxies.len() - 1 {
+        for j in i + 1..galaxies.len() {
+            let (x0, rx0, x1, rx1) = if galaxies[i].x > galaxies[j].x {
+                (galaxies[j].x, galaxies[j].rx, galaxies[i].x, galaxies[i].rx)
+            } else {
+                (galaxies[i].x, galaxies[i].rx, galaxies[j].x, galaxies[j].rx)
+            };
+
+            let (y0, ry0, y1, ry1) = if galaxies[i].y > galaxies[j].y {
+                (galaxies[j].y, galaxies[j].ry, galaxies[i].y, galaxies[i].ry)
+            } else {
+                (galaxies[i].y, galaxies[i].ry, galaxies[j].y, galaxies[j].ry)
+            };
+
+            let x_dist = (x1 - x0) as usize + (rx1 - rx0) as usize * expansion_factor;
+            let y_dist = (y1 - y0) as usize + (ry1 - ry0) as usize * expansion_factor;
+            sum += x_dist + y_dist; // Manhattan
+        }
+    }
+    sum
 }
 
-type Distances = HashMap<(usize, usize), usize>;
+#[derive(Debug, PartialEq)]
+struct Galaxy {
+    x: u8,
+    y: u8,
+    rx: u8,
+    ry: u8,
+}
+type Galaxies = Vec<Galaxy>;
 
 #[test]
 pub fn test() {
@@ -80,34 +96,14 @@ pub fn test() {
         "#...#.....",
     ];
 
-    let map = parse_input(&input);
-    assert_eq!(map.stars.len(), 9);
-    assert_eq!(map.stars[0], (3, 0));
-    assert_eq!(
-        map.col_empty,
-        [false, false, true, false, false, true, false, false, true, false]
-    );
-    assert_eq!(
-        map.row_empty,
-        [false, false, false, true, false, false, false, true, false, false]
-    );
-
-    let distances = calc_distances(&map, 2);
-    assert_eq!(distances.len(), 36);
-    assert_eq!(distances[&(4, 8)], 9);
-    assert_eq!(distances[&(0, 6)], 15);
-    assert_eq!(distances[&(2, 5)], 17);
-    assert_eq!(distances[&(7, 8)], 5);
+    let galaxies = parse_input(&input);
+    assert_eq!(galaxies.len(), 9);
+    assert_eq!(galaxies[0], Galaxy { x: 3, y: 0, rx: 1, ry: 0 });
 
     assert_eq!(a(&input), "374");
 
-    let distances10 = calc_distances(&map, 10);
-    assert_eq!(distances10[&(7, 8)], 4 + 10 - 1);
-    assert_eq!(distances10.values().sum::<usize>(), 1030);
-
-    let distances100 = calc_distances(&map, 100);
-    assert_eq!(distances100[&(7, 8)], 4 + 100 - 1);
-    assert_eq!(distances100.values().sum::<usize>(), 8410);
+    assert_eq!(calc_distance_sum(&galaxies, 10), 1030);
+    assert_eq!(calc_distance_sum(&galaxies, 100), 8410);
 
     // assert_eq!(b(&input), "");
 }
