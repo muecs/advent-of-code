@@ -21,4 +21,8 @@ pub struct Args {
     /// Part of puzzle
     #[clap(value_parser)]
     pub part: PartValues,
+
+    /// Run repetitions for benchmarking
+    #[clap(short='n', long, default_value_t = 1, value_name = "N", value_parser)]
+    pub iterations: u32,
 }

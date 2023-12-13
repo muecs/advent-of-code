@@ -1,5 +1,5 @@
 use clap::Parser;
-use std::time::SystemTime;
+use std::time::{Instant, Duration};
 
 mod args;
 mod y2020;
@@ -17,19 +17,29 @@ fn main() {
     let input = input_str.lines().collect::<Vec<_>>();
     println!("Input: {} lines @ {:.1} kB", input.len(), input_str.len() / 1024);
     
-    let start = SystemTime::now();
-    let solution = match args.year {
-        2020 => y2020::solve(args.day, args.part, &input),
-        2021 => y2021::solve(args.day, args.part, &input),
-        2022 => y2022::solve(args.day, args.part, &input),
-        2023 => y2023::solve(args.day, args.part, &input),
-        _ => { println!("Unsupported year: {}", args.year); String::new() },
-    };
-    if solution.is_empty() {
-        println!("No solution output.");
-    } else {
-        let elapsed = start.elapsed().unwrap().as_millis();
-        println!("Solution: {solution} (in {elapsed} ms)");
+    let total: Duration = (0..args.iterations).map(|i| {
+        let start = Instant::now();
+        let solution = match args.year {
+            2020 => y2020::solve(args.day, args.part, &input),
+            2021 => y2021::solve(args.day, args.part, &input),
+            2022 => y2022::solve(args.day, args.part, &input),
+            2023 => y2023::solve(args.day, args.part, &input),
+            _ => { println!("Unsupported year: {}", args.year); String::new() },
+        };
+        let duration = start.elapsed();
+        if i == 0 {
+            if solution.is_empty() {
+                println!("No solution output.");
+            } else {
+                println!("Solution: {solution} (in {duration:?})");
+            }
+        }
+        duration
+    }).sum();
+
+    if args.iterations > 1 {
+        let mean = total / args.iterations;
+        println!("Mean: {mean:?} ({} runs)", args.iterations);
     }
 }
 
