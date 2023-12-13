@@ -9,9 +9,19 @@ mod y2023;
 
 use crate::args::Args;
 
+type SolveFunc = fn(&Vec<&str>) -> String;
+
 fn main() {
     let args = Args::parse();
     println!("Solving AoC {}/{:02}/{:?}...", args.year, args.day, args.part);
+
+    let solve: SolveFunc = match args.year {
+        2020 => y2020::solver(args.day, args.part),
+        2021 => y2021::solver(args.day, args.part),
+        2022 => y2022::solver(args.day, args.part),
+        2023 => y2023::solver(args.day, args.part),
+        _ => unimplemented!("Unsupported year: {}", args.year),
+    };
 
     let input_str = get_input(args.year, args.day);
     let input = input_str.lines().collect::<Vec<_>>();
@@ -19,13 +29,7 @@ fn main() {
     
     let total: Duration = (0..args.iterations).map(|i| {
         let start = Instant::now();
-        let solution = match args.year {
-            2020 => y2020::solve(args.day, args.part, &input),
-            2021 => y2021::solve(args.day, args.part, &input),
-            2022 => y2022::solve(args.day, args.part, &input),
-            2023 => y2023::solve(args.day, args.part, &input),
-            _ => { println!("Unsupported year: {}", args.year); String::new() },
-        };
+        let solution = solve(&input);
         let duration = start.elapsed();
         if i == 0 {
             if solution.is_empty() {

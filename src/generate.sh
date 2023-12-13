@@ -17,15 +17,15 @@ for d in {1..25}; do
 done
 
 echo '
-use crate::args::PartValues::{self, *};
+use crate::{args::PartValues::{self, *}, SolveFunc};
 
-pub fn solve(day: u8, part: PartValues, input: &Vec<&str>) -> String {
+pub fn solver(day: u8, part: PartValues) -> SolveFunc {
     match (day, part) {' >> mod.rs
 
 for d in {1..25}; do
-    printf "        // (%02d, A) => d%02d::a(&input),\n" $d $d >> mod.rs
+    printf "        // (%02d, A) => d%02d::a,\n" $d $d >> mod.rs
     if [ $d -lt 25 ]; then
-        printf "        // (%02d, B) => d%02d::b(&input),\n" $d $d >> mod.rs
+        printf "        // (%02d, B) => d%02d::b,\n" $d $d >> mod.rs
     fi
 
     echo "//! Day $d
@@ -53,10 +53,10 @@ pub fn test() {
 done
 
 echo "\
-        _ => { println!(\"Unsupported puzzle: {day} {part:?}\"); String::new() }
+        _ => unimplemented!("Unsupported puzzle: {day} {part:?}"),
     }
 }" >> mod.rs
 
-git add mod.rs d??.rs
+git add mod.rs #d??.rs
 
 echo 'Done. Please add to main.rs manually.'

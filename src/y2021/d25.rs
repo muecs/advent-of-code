@@ -18,11 +18,6 @@ pub fn a(input: &Vec<&str>) -> String {
     steps.to_string()
 }
 
-/// n/a
-pub fn b(_input: &Vec<&str>) -> String {
-    String::new()
-}
-
 fn parse_input(input: &Vec<&str>) -> Grid {
     input
         .iter()
@@ -92,5 +87,4 @@ pub fn test() {
     ];
 
     assert_eq!(a(&input), "58");
-    assert_eq!(b(&input), "");
 }
