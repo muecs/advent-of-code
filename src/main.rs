@@ -1,5 +1,5 @@
 use clap::Parser;
-use std::time::{Instant, Duration};
+use std::{time::{Instant, Duration}, path::Path};
 
 mod args;
 mod y2020;
@@ -48,9 +48,15 @@ fn main() {
 }
 
 fn get_input(year: u16, day: u8) -> String {
+    let cache_path = format!("cache/y{year}/d{day}.txt");
+    let cache_path = Path::new(&cache_path);
+    if let Ok(input) = std::fs::read_to_string(&cache_path) {
+        return input;
+    }
+
     let url = format!("https://adventofcode.com/{year}/day/{day}/input");
     let session = std::env::var("AOC_SESSION").expect("Could not fetch env var AOC_SESSION");
-    reqwest::blocking::Client::default()
+    let input = reqwest::blocking::Client::default()
         .get(url)
         .header("cookie", format!("session={session}"))
         .send()
@@ -58,5 +64,11 @@ fn get_input(year: u16, day: u8) -> String {
         .error_for_status()
         .unwrap()
         .text()
-        .unwrap()
+        .unwrap();
+
+    if let Ok(_) = std::fs::create_dir_all(&cache_path.parent().unwrap()) {
+        let _ = std::fs::write(&cache_path, &input);
+    }
+
+    input
 }
