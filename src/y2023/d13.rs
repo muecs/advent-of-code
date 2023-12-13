@@ -39,11 +39,14 @@ fn parse_input(input: &Vec<&str>) -> Patterns {
 fn find_reflection(checksums: &Checksums, flips: u32) -> Option<usize> {
     // println!("find reflection in {:?}", checksums);
     (1..checksums.len()).find_map(|i| {
-        ((0..i.min(checksums.len() - i))
-            .map(|j| (checksums[i + j] ^ checksums[i - 1 - j]).count_ones())
-            .sum::<u32>()
-            == flips)
-            .then_some(i)
+        let mut diffs = 0;
+        for j in 0..i.min(checksums.len() - i) {
+            diffs += (checksums[i + j] ^ checksums[i - 1 - j]).count_ones();
+            if diffs > flips {
+                break; // early out, too many diffs already
+            }
+        }
+        (diffs == flips).then_some(i)
     })
 }
 
