@@ -13,7 +13,7 @@ mod d12;
 mod d13;
 mod d14;
 mod d15;
-// mod d16;
+mod d16;
 // mod d17;
 // mod d18;
 // mod d19;
@@ -58,8 +58,8 @@ pub fn solver(day: u8, part: PartValues) -> SolveFunc {
         (14, B) => d14::b,
         (15, A) => d15::a,
         (15, B) => d15::b,
-        // (16, A) => d16::a,
-        // (16, B) => d16::b,
+        (16, A) => d16::a,
+        (16, B) => d16::b,
         // (17, A) => d17::a,
         // (17, B) => d17::b,
         // (18, A) => d18::a,
