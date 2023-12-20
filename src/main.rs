@@ -2,6 +2,7 @@ use clap::Parser;
 use std::{time::{Instant, Duration}, path::Path};
 
 mod args;
+mod utils;
 mod y2020;
 mod y2021;
 mod y2022;
