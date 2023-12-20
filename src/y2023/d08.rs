@@ -1,9 +1,7 @@
 //! Day 8: Haunted Wasteland
 
+use crate::utils;
 use std::collections::HashMap;
-
-// const START: &str = "AAA";
-// const GOAL: &str = "ZZZ";
 
 /// steps required to reach goal
 pub fn a(input: &Vec<&str>) -> String {
@@ -21,8 +19,8 @@ pub fn b(input: &Vec<&str>) -> String {
                 .then(|| count_steps(node, &input[0], &graph, |n| n.ends_with('Z')))
         })
         .collect::<Vec<_>>();
-    println!("steps: {:?}", steps);
-    lcm(&steps).to_string()
+    // println!("steps: {:?}", steps);
+    utils::lcm(&steps).to_string()
 }
 
 fn parse_graph<'a>(input: &'a Vec<&'a str>) -> Graph<'a> {
@@ -46,21 +44,6 @@ fn count_steps(start: &str, directions: &str, graph: &Graph, condition: fn(&str)
         steps += 1;
     }
     steps
-}
-
-/// least common multiple
-fn lcm(values: &Vec<usize>) -> usize {
-    // Note: this is very slow, should be using GCD method
-    let mut temp = values.clone();
-    while temp.iter().skip(1).any(|&v| v != temp[0]) {
-        let (min_i, _) = temp
-            .iter()
-            .enumerate()
-            .reduce(|min, curr| if curr.1 < min.1 { curr } else { min })
-            .unwrap();
-        temp[min_i] += values[min_i]; // further multiple for lowest value
-    }
-    temp[0]
 }
 
 type Graph<'a> = HashMap<&'a str, (&'a str, &'a str)>;
