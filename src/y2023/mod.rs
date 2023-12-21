@@ -18,7 +18,7 @@ mod d17;
 mod d18;
 mod d19;
 mod d20;
-// mod d21;
+mod d21;
 // mod d22;
 // mod d23;
 // mod d24;
@@ -68,8 +68,8 @@ pub fn solver(day: u8, part: PartValues) -> SolveFunc {
         (19, B) => d19::b,
         (20, A) => d20::a,
         (20, B) => d20::b,
-        // (21, A) => d21::a,
-        // (21, B) => d21::b,
+        (21, A) => d21::a,
+        (21, B) => d21::b,
         // (22, A) => d22::a,
         // (22, B) => d22::b,
         // (23, A) => d23::a,
