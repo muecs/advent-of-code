@@ -39,28 +39,24 @@ fn parse_input(input: &Vec<&str>) -> (Grid, Point) {
     )
 }
 
-fn count_path_options(grid: &Grid, start: &Point, length: i64) -> i64 {
-    let dims: Point = (
-        grid[0].len().try_into().unwrap(),
-        grid.len().try_into().unwrap(),
-    );
-    assert_eq!(dims.0, dims.1);
+fn count_path_options(grid: &Grid, start: &Point, length: usize) -> usize {
+    let dim = grid.len() as i16;
     let mut pending = HashSet::<Point>::from([*start]);
     let mut plots = Vec::<i64>::new();
 
     for step in 0..length {
-        if step % dims.0 == dims.0 / 2 {
+        if step % grid.len() == grid.len() / 2 {
             // we're on the edge between two repeating grids
             // take a snapshot of plots visited
             plots.push(pending.len() as i64);
             // println!("step: {step}, plots: {}", pending.len());
             if plots.len() == 3 {
                 // can extrapolate based on 3 measurements
-                let x = length as i64 / dims.0;
+                let x = length as i64 / grid.len() as i64;
                 let a = plots[0];
                 let b = plots[1] - plots[0];
                 let c = plots[2] - plots[1];
-                return x * (x - 1) / 2 * (c - b) + x * b + a;
+                return (x * (x - 1) / 2 * (c - b) + x * b + a) as usize;
             }
         }
 
@@ -68,15 +64,15 @@ fn count_path_options(grid: &Grid, start: &Point, length: i64) -> i64 {
             .iter()
             .map(|p| [(1, 0), (0, 1), (-1, 0), (0, -1)].map(|(dx, dy)| (p.0 + dx, p.1 + dy)))
             .flatten()
-            .filter(|p| !grid[p.1.rem_euclid(dims.1) as usize][p.0.rem_euclid(dims.0) as usize])
+            .filter(|p| !grid[p.1.rem_euclid(dim) as usize][p.0.rem_euclid(dim) as usize])
             .collect();
     }
 
-    pending.len() as i64
+    pending.len()
 }
 
 type Grid = Vec<Vec<bool>>;
-type Point = (i64, i64);
+type Point = (i16, i16);
 
 #[test]
 pub fn test() {
