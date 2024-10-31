@@ -21,7 +21,7 @@ mod d20;
 mod d21;
 mod d22;
 mod d23;
-// mod d24;
+mod d24;
 // mod d25;
 
 use crate::{args::PartValues::{self, *}, SolveFunc};
@@ -74,8 +74,8 @@ pub fn solver(day: u8, part: PartValues) -> SolveFunc {
         (22, B) => d22::b,
         (23, A) => d23::a,
         (23, B) => d23::b,
-        // (24, A) => d24::a,
-        // (24, B) => d24::b,
+        (24, A) => d24::a,
+        (24, B) => d24::b,
         // (25, A) => d25::a,
         _ => unimplemented!("Unsupported puzzle: {day} {part:?}"),
     }
