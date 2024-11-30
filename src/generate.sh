@@ -53,7 +53,7 @@ pub fn test() {
 done
 
 echo "\
-        _ => unimplemented!("Unsupported puzzle: {day} {part:?}"),
+        _ => unimplemented!(\"Unsupported puzzle: {day} {part:?}\"),
     }
 }" >> mod.rs
 
