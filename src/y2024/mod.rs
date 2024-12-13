@@ -10,7 +10,7 @@ mod d09;
 mod d10;
 mod d11;
 mod d12;
-// mod d13;
+mod d13;
 // mod d14;
 // mod d15;
 // mod d16;
@@ -52,8 +52,8 @@ pub fn solver(day: u8, part: PartValues) -> SolveFunc {
         (11, B) => d11::b,
         (12, A) => d12::a,
         (12, B) => d12::b,
-        // (13, A) => d13::a,
-        // (13, B) => d13::b,
+        (13, A) => d13::a,
+        (13, B) => d13::b,
         // (14, A) => d14::a,
         // (14, B) => d14::b,
         // (15, A) => d15::a,
