@@ -1,9 +1,9 @@
 //! Day 20: Race Condition
 
 #[cfg(test)]
-const LIMIT: usize = 50;
+const LIMIT: Size = 50;
 #[cfg(not(test))]
-const LIMIT: usize = 100;
+const LIMIT: Size = 100;
 
 /// cheats of length 2 saving at least 100 steps
 pub fn a(input: &Vec<&str>) -> String {
@@ -28,7 +28,7 @@ fn parse_input(input: &Vec<&str>) -> (Map, Pos) {
                     '#' => false,
                     '.' | 'E' => true,
                     'S' => {
-                        start = (x, y);
+                        start = (x as Size, y as Size);
                         true
                     }
                     _ => unreachable!(),
@@ -39,50 +39,47 @@ fn parse_input(input: &Vec<&str>) -> (Map, Pos) {
     (map, start)
 }
 
-fn find_cheats(map: &Map, start: &Pos, max_dist: usize) -> usize {
-    let mut course = Vec::new();
-    let mut pending = vec![*start];
-    let mut steps = 0usize;
+fn find_cheats(map: &Map, start: &Pos, max_dist: Size) -> usize {
+    let mut course = Vec::with_capacity(10000);
+    let mut pending = Some(*start);
     let mut cheats = 0usize;
 
-    while let Some(pos) = pending.pop() {
+    while let Some(pos) = pending.take() {
         for (dx, dy) in [(0, -1), (1, 0), (0, 1), (-1, 0)] {
             let next_pos = (
                 pos.0.checked_add_signed(dx).unwrap(),
                 pos.1.checked_add_signed(dy).unwrap(),
             );
-            if map[next_pos.1][next_pos.0]
-                && course
-                    .last()
-                    .is_none_or(|(last_pos, _)| last_pos != &next_pos)
+            if map[next_pos.1 as usize][next_pos.0 as usize]
+                && course.last().is_none_or(|last_pos| last_pos != &next_pos)
             {
-                pending.push(next_pos);
+                pending = Some(next_pos);
                 break; // only one way
             }
         }
 
         // count allowable cheats from this tile to previous ones
-        cheats += course
-            .iter()
-            .filter(|(prev_pos, prev_steps)| {
-                let dist = distance(&pos, prev_pos);
-                dist <= max_dist && steps - *prev_steps >= dist + LIMIT
-            })
-            .count();
+        let len = course.len() as Size;
+        for i in 0..len.saturating_sub(LIMIT + 1) {
+            let dist = distance(&pos, &course[i as usize]);
+            if dist <= max_dist && i + dist + LIMIT <= len {
+                cheats += 1;
+            }
+        }
 
-        course.push((pos, steps));
-        steps += 1;
+        course.push(pos);
     }
 
     cheats
 }
 
 /// calculates Manhattan Distance between two points
-fn distance(p1: &Pos, p2: &Pos) -> usize {
+fn distance(p1: &Pos, p2: &Pos) -> Size {
     p1.0.abs_diff(p2.0) + p1.1.abs_diff(p2.1)
 }
 
-type Pos = (usize, usize);
+type Size = u16;
+type Pos = (Size, Size);
 type Map = Vec<Vec<bool>>;
 
 #[test]
