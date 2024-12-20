@@ -1,7 +1,5 @@
 //! Day 20: Race Condition
 
-use std::collections::HashMap;
-
 #[cfg(test)]
 const LIMIT: usize = 50;
 #[cfg(not(test))]
@@ -42,7 +40,7 @@ fn parse_input(input: &Vec<&str>) -> (Map, Pos) {
 }
 
 fn find_cheats(map: &Map, start: &Pos, max_dist: usize) -> usize {
-    let mut course = HashMap::new();
+    let mut course = Vec::new();
     let mut pending = vec![*start];
     let mut steps = 0usize;
     let mut cheats = 0usize;
@@ -53,7 +51,11 @@ fn find_cheats(map: &Map, start: &Pos, max_dist: usize) -> usize {
                 pos.0.checked_add_signed(dx).unwrap(),
                 pos.1.checked_add_signed(dy).unwrap(),
             );
-            if map[next_pos.1][next_pos.0] && !course.contains_key(&next_pos) {
+            if map[next_pos.1][next_pos.0]
+                && course
+                    .last()
+                    .is_none_or(|(last_pos, _)| last_pos != &next_pos)
+            {
                 pending.push(next_pos);
                 break; // only one way
             }
@@ -68,7 +70,7 @@ fn find_cheats(map: &Map, start: &Pos, max_dist: usize) -> usize {
             })
             .count();
 
-        course.insert(pos, steps);
+        course.push((pos, steps));
         steps += 1;
     }
 
