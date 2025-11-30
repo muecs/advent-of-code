@@ -8,6 +8,7 @@ mod y2021;
 mod y2022;
 mod y2023;
 mod y2024;
+mod y2025;
 
 use crate::args::Args;
 
@@ -23,6 +24,7 @@ fn main() {
         2022 => y2022::solver(args.day, args.part),
         2023 => y2023::solver(args.day, args.part),
         2024 => y2024::solver(args.day, args.part),
+        2025 => y2025::solver(args.day, args.part),
         _ => unimplemented!("Unsupported year: {}", args.year),
     };
 
