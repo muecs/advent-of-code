@@ -24,7 +24,7 @@ pub fn b(input: &Vec<&str>) -> String {
         .to_string()
 }
 
-fn parse_input<'a>(input: &'a Vec<&'a str>) -> (Rules, Sequences) {
+fn parse_input<'a>(input: &'a Vec<&'a str>) -> (Rules<'a>, Sequences<'a>) {
     let mut it = input.iter();
     let rules = it.by_ref().map_while(|s| s.split_once('|')).collect();
     let seq = it.map(|s| s.split(',').collect()).collect();
