@@ -1,4 +1,4 @@
-// mod d01;
+mod d01;
 // mod d02;
 // mod d03;
 // mod d04;
@@ -28,8 +28,8 @@ use crate::{args::PartValues::{self, *}, SolveFunc};
 
 pub fn solver(day: u8, part: PartValues) -> SolveFunc {
     match (day, part) {
-        // (01, A) => d01::a,
-        // (01, B) => d01::b,
+        (01, A) => d01::a,
+        (01, B) => d01::b,
         // (02, A) => d02::a,
         // (02, B) => d02::b,
         // (03, A) => d03::a,
