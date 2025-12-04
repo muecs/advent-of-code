@@ -1,7 +1,7 @@
 mod d01;
-// mod d02;
-// mod d03;
-// mod d04;
+mod d02;
+mod d03;
+mod d04;
 // mod d05;
 // mod d06;
 // mod d07;
@@ -30,12 +30,12 @@ pub fn solver(day: u8, part: PartValues) -> SolveFunc {
     match (day, part) {
         (01, A) => d01::a,
         (01, B) => d01::b,
-        // (02, A) => d02::a,
-        // (02, B) => d02::b,
-        // (03, A) => d03::a,
-        // (03, B) => d03::b,
-        // (04, A) => d04::a,
-        // (04, B) => d04::b,
+        (02, A) => d02::a,
+        (02, B) => d02::b,
+        (03, A) => d03::a,
+        (03, B) => d03::b,
+        (04, A) => d04::a,
+        (04, B) => d04::b,
         // (05, A) => d05::a,
         // (05, B) => d05::b,
         // (06, A) => d06::a,
