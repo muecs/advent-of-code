@@ -34,7 +34,7 @@ pub fn b(input: &Vec<&str>) -> String {
     let (_, (x, y)) = bytes
         .iter()
         .enumerate()
-        .find(|(i, &p)| {
+        .find(|&(ref i, &p)| {
             map[p.1][p.0] = false;
             if *i < LIMIT || !(path.is_empty() || path.contains(&p)) {
                 return false;

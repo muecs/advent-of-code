@@ -2,8 +2,8 @@
 name = "advent-of-code"
 version = "0.1.0"
 authors = ["Steve Muecklisch <steve.muecklisch@gmail.com>"]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.90"
 
 [dependencies]
 clap = { version = "4.5", features = ["derive", "env"] }
